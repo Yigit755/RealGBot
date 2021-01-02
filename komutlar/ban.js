@@ -1,41 +1,43 @@
-const Discord = require('discord.js');
-const db = require('quick.db')
-const ayarlar = require('../ayarlar.json')
-exports.run = async (client, message, args) => {
- if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("Bu Komutu Kullanabilmek İçin **YÖNETİCİ** Yetkisine Sahip Olman Gerek.");
-let banlimit = db.fetch(`plasmiccode.banlimit_${message.guild.id}`)
-let banlog = db.fetch(`plasmiccode.banlog_${message.guild.id}`)
-let bansayı = db.fetch(`plasmiccode.bansayı_${message.author.id}_${message.guild.id}`)
-
-if(!banlimit) return message.channel.send(`:x: Ban Limiti Ayarlanmamış.`)
-let kişi = message.mentions.users.first();
-if(!kişi) return message.channel.send(`:x: Yasaklayacağın  Kullanıcıyı Etiketlemelisin.`)
-let sebep = args.slice(1).join(` `)
-if(!sebep) sebep = `Belirtilmemiş.`
-if(bansayı >= banlimit) return message.channel.send(`:x: Yasaklama Limitine Ulaşmışsın.`)
-message.guild.member(kişi).ban(sebep)
-db.add(`plasmiccode.bansayı_${message.author.id}_${message.guild.id}`, 1)
-  const plasmic = new Discord.MessageEmbed()
- .setTitle(`Plasmic Code`)
- .setThumbnail(kişi.user.displayAvatarURL())
- .addField(`${kişi} Adlı Kullanıcı Sunucudan Yasaklandı!`)
- .addField(`Yasaklayan Yetkili: ${message.author.id}`)
- .addField(`Yasaklama Sebebi: ${sebep}`)
- .setDescription(`Banlama Başarılı O Bunu Hak Etmişti!`)
- .setTimestamp()
-  return message.channel.send(plasmic)
-
+module.exports.run = async (bot, message, args) => {
+  message.delete();
+  let reason = args.slice(1).join(" ");
+  let user = message.mentions.users.first();
+  if (reason.length < 1)
+    return message.reply("correct usage is : Softban @user reason").then(m => m.delete(3000));
+  if (message.mentions.users.size < 1)
+    return message
+      .reply("I might be Hades but im no to read brains, mention user")
+      .catch(console.error)
+      .then(m => m.delete(3000));
+  if (!message.guild.member(user).bannable)
+    return message.reply("Nether realm is a place where you respect the elderly.").then(m => m.delete(3000));
+  var fetched = await message.channel.fetchMessages({ limit: 99 });
+  if (user) {
+    var fetched = fetched
+      .filter(m => m.author.id === user.id)
+      .array()
+      .slice(0, 99);
+  }
+  message.channel.bulkDelete(fetched);
+  message.guild.ban(user, 2);
+  message.channel
+    .send(
+      `${user} users last 99 message was deleted and \`${reason}\` is the reason he was sent to hell!`
+    )
+    .then(m => m.delete(3000))
+    .catch(error =>
+      message.channel.send("messages older then 14 days re not in my responsibily")
+    )
+    .then(m => m.delete(3000));
 };
-
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: ['yasakla'],
-  permLevel: 0
+  aliases: ["softban", "sb"],
+  permlevel: 2
 };
-
 exports.help = {
-  name: 'ban',
-  description: 'Üye yasaklarsınız.',
-  usage: 'ban @Kullanıcı [Sebep]'
-};   
+  name: "soft-ban",
+  description: "Belirttiğiniz kullanıcının önce mesajlarını siler sonra banlar.",
+  usage: "softban <@kulanıcı>"
+};
