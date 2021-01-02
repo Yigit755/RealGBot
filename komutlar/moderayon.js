@@ -20,12 +20,9 @@ Bir komut hakkında detaylı __yardım için__: **-yardım**
 
 
 **• Komutlar**
-> **-kayıt-bilgi** →  Kayıt için bilgi.
 > **-taç** → Sunucunun sahibini gösterir.
 > **-sil** → Yazdığınız miktarda mesajı siler.
 > **-nuke** → Kanaldaki bütün mesajları siler.
-> **-ban** → Etiketlediğiniz kişiyi sunucudan banlarsınız.
-> **-kick** → Etiketlediğiniz kişiyi sunucudan atarsınız.
 > **-duyuru** → Bot yazdıgının mesajı duyuru yapar.
 > **-küfür** → Küfür engel sistemini açarsınız.
 > **-reklam** → Reklam engel sistemi açarsınız.
@@ -34,6 +31,7 @@ Bir komut hakkında detaylı __yardım için__: **-yardım**
 > **-sunucubilgi** →  Sunucu hakkında bilgi verir
 > **-üyedurum** →  Sunucu üyeleri hakkında bilgi verir
 > **-mute** → Etiketlenen kişiye belirtilen miktarda mute atar.
+> **-forceban** → İDsi yazılan kişiye ban atar.
 
 **• Bilgilendirme**
 

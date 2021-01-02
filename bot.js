@@ -69,6 +69,22 @@ fs.readdir("./komutlar/", (err, files) => {
     });
   });
 });
+ client.on("message" , async msg => {
+  if(msg.content.startsWith(ayarlar.prefix+"afk")) return;
+  let afk = msg.mentions.users.first()
+  const ehu = db.fetch(`afkid_${msg.author.id}_${msg.guild.id}`)
+  const hapşu = db.fetch(`afkAd_${msg.author.id}_${msg.guild.id}`)
+ if(afk){const sebep = db.fetch(`afkSebep_${afk.id}_${msg.guild.id}`)
+   const ehu31 = db.fetch(`afkid_${afk.id}_${msg.guild.id}`)
+   if(msg.content.includes(ehu31)){msg.reply(new Discord.MessageEmbed().setDescription(`Etiketlediğiniz Kişi Afk \n Sebep: ${sebep}`))}}
+  if(msg.author.id === ehu){
+       msg.reply(new Discord.MessageEmbed().setDescription(`Artık Afk Değilsiniz`))
+  db.delete(`afkSebep_${msg.author.id}_${msg.guild.id}`)
+  db.delete(`afkid_${msg.author.id}_${msg.guild.id}`)
+  db.delete(`afkAd_${msg.author.id}_${msg.guild.id}`)
+   msg.member.setNickname(hapşu)
+ } 
+});
 
 client.reload = command => {
   return new Promise((resolve, reject) => {
