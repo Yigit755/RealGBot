@@ -34,7 +34,6 @@ Bir komut hakkında detaylı __yardım için__: **-yardım**
 > **-sunucubilgi** →  Sunucu hakkında bilgi verir
 > **-üyedurum** →  Sunucu üyeleri hakkında bilgi verir
 > **-mute** → Etiketlenen kişiye belirtilen miktarda mute atar.
-> **-taşı** → Etiketlenen üyeyi taşır.
 
 **• Bilgilendirme**
 
